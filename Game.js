@@ -227,11 +227,43 @@ class Game {
      */
     endGame(playerWon = false) {
         this.ended = true;
+    
+        // Eliminar todos los oponentes (triángulos o jefe) del DOM
+        const opponents = document.getElementsByClassName("Opponent"); // Obtener todos los elementos con la clase "Opponent"
+        Array.from(opponents).forEach(opponent => {
+            document.body.removeChild(opponent); // Eliminar cada oponente del DOM
+        });
+    
+        // Eliminar el oponente actual si aún existe
+        if (this.opponent) {
+            document.body.removeChild(this.opponent.image); // Eliminar el oponente actual del DOM
+            this.opponent = undefined; // Limpiar la referencia del oponente
+        }
+    
+        // Eliminar cualquier disparo del jugador y del oponente
+        this.playerShots.forEach((shot) => {
+            if (shot.image && shot.image.parentElement) {
+                document.body.removeChild(shot.image); // Eliminar disparos del jugador
+            }
+        });
+        this.opponentShots.forEach((shot) => {
+            if (shot.image && shot.image.parentElement) {
+                document.body.removeChild(shot.image); // Eliminar disparos del oponente
+            }
+        });
+    
+        // Limpiar las listas de disparos
+        this.playerShots = [];
+        this.opponentShots = [];
+    
+        // Mostrar la imagen de victoria o derrota
         let image = playerWon ? 'assets/you_win.png' : GAME_OVER_PICTURE; // Imagen de victoria o derrota
         let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, image);
         gameOver.render();
+    
         console.log(playerWon ? "Victory!" : "Game Over");
     }
+    
 
     /**
      * Reset the game
@@ -244,21 +276,25 @@ class Game {
      * Update the game elements
      */
     update () {
-        if (!this.ended) {
-            this.player.update();
-            if (this.opponent === undefined) {
-                this.opponent = new Opponent(this);
-            }
-            this.opponent.update();
-            this.playerShots.forEach((shot) => {
-                shot.update();
-            });
-            this.opponentShots.forEach((shot) => {
-                shot.update();
-            });
-            this.checkCollisions();
-            this.render();
+        if (this.ended) {
+            // Si el juego ha terminado, no actualizar más elementos ni oponentes
+            return;
         }
+    
+        // Actualización normal del juego si no ha terminado
+        this.player.update();
+        if (this.opponent === undefined) {
+            this.opponent = new Opponent(this); // Crear oponente solo si el juego no ha terminado
+        }
+        this.opponent.update();
+        this.playerShots.forEach((shot) => {
+            shot.update();
+        });
+        this.opponentShots.forEach((shot) => {
+            shot.update();
+        });
+        this.checkCollisions();
+        this.render();
     }
 
     /**
