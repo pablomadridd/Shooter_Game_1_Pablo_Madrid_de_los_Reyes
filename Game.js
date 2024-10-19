@@ -17,6 +17,7 @@ class Game {
         this.opponentShots = []; // Shots fired by the opponent
         this.xDown = null; // Position where the user touched the screen
         this.paused = false; // Indicates whether the game is paused
+        this.SCORE = 0;
     }
 
 
@@ -263,5 +264,6 @@ class Game {
         this.opponentShots.forEach((shot) => {
             shot.render();
         });
+        document.getElementById('scoreli').innerHTML = `Score: ${this.SCORE}`;
     }
 }
