@@ -11,19 +11,24 @@ class Boss extends Character {
 
         super(game, width, height, x, y, speed, myImage, myImageDead);
 
-        this.health = 3; // Jefe con más vida
+        
         this.direction = "R"; // Comienza moviéndose hacia la derecha
         this.shoot(); // Iniciar disparos del jefe
     }
 
+shoot() {
+    if (!this.dead && !this.game.ended) {
+        console.log("Boss shooting...");
+        // Crea un disparo con más velocidad y que vaya recto hacia abajo
+        const shot = new Shot(this.game, this); 
+        shot.speed = 30; // Aumenta la velocidad del disparo (ajusta según lo que prefieras)
+        shot.direction = "DOWN"; // Asegura que los disparos vayan recto hacia abajo
+        this.game.opponentShots.push(shot); // Añade el disparo a la lista de disparos del oponente
 
-    shoot() {
-        if (!this.dead && !this.game.ended) {
-            console.log("Boss shooting...");
-            this.game.shoot(this); // Usa el mismo método shoot() que los oponentes normales
-            setTimeout(() => this.shoot(), 1000); // Dispara cada segundo (ajusta el tiempo si lo prefieres)
-        }
+        // Dispara cada medio segundo para aumentar la frecuencia
+        setTimeout(() => this.shoot(), 500); // Ajusta el tiempo según lo que prefieras
     }
+}
 
 
     /**
