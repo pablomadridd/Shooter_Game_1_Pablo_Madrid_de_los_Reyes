@@ -66,7 +66,13 @@ class Opponent extends Character {
         if (!this.dead) {
             this.game.SCORE += 1; // Incrementar el puntaje
             console.log(`Score: ${this.game.SCORE}, Opponent Defeated`);
+    
+            // Espera de 2 segundos antes de eliminar la imagen
             setTimeout(() => {
+                if (this.image && this.image.parentElement) {
+                    console.log("Removing opponent image from DOM...");
+                    document.body.removeChild(this.image); // Eliminar la imagen del DOM
+                }
                 this.game.removeOpponent(); // Verificar si aparece el jefe
             }, 2000);
             super.collide();
