@@ -89,11 +89,20 @@ class Game {
     /**
      * Remove the opponent from the game
      */
-    removeOpponent () {
-        if (this.opponent) {
+    removeOpponent() {
+        if (this.SCORE > 0 && !this.bossSpawned) {
+            console.log("Score is greater than 0, spawning boss...");
+            this.opponent = new Boss(this); // Crear al jefe
+            this.bossSpawned = true; // Marcar que el jefe ha sido creado
+        } else if (this.opponent instanceof Boss) {
             document.body.removeChild(this.opponent.image);
+            this.opponent = undefined;
+            console.log("Boss defeated! You win!");
+            this.endGame(true); // Terminar el juego con victoria
+        } else {
+            console.log("Spawning triangle...");
+            this.opponent = new Opponent(this); // Seguir creando triángulos normales si el puntaje es 0
         }
-        this.opponent = new Opponent(this);
     }
 
     /**
@@ -216,10 +225,12 @@ class Game {
     /**
      * End the game
      */
-    endGame () {
+    endGame(playerWon = false) {
         this.ended = true;
-        let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, GAME_OVER_PICTURE)
+        let image = playerWon ? 'assets/you_win.png' : GAME_OVER_PICTURE; // Imagen de victoria o derrota
+        let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, image);
         gameOver.render();
+        console.log(playerWon ? "Victory!" : "Game Over");
     }
 
     /**

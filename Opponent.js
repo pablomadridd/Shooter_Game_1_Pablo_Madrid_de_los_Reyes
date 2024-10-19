@@ -63,14 +63,13 @@ class Opponent extends Character {
      * Kill the opponent
      */
     collide() {
-        
         if (!this.dead) {
+            this.game.SCORE += 1; // Incrementar el puntaje
+            console.log(`Score: ${this.game.SCORE}, Opponent Defeated`);
             setTimeout(() => {
-                this.game.removeOpponent();
+                this.game.removeOpponent(); // Verificar si aparece el jefe
             }, 2000);
             super.collide();
-            this.game.SCORE += 1;
         }
-
     }
 }
