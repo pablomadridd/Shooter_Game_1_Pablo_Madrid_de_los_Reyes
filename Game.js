@@ -265,5 +265,6 @@ class Game {
             shot.render();
         });
         document.getElementById('scoreli').innerHTML = `Score: ${this.SCORE}`;
+        document.getElementById('livesli').innerHTML = `Lives: ${this.player.LIVES}`;
     }
 }
