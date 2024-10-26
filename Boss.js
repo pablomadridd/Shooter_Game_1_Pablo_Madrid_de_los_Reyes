@@ -61,10 +61,14 @@ class Boss extends Character {
      * Sobrescribir el método `collide` para manejar las colisiones del jefe
      */
     collide() {
+        if (this.dead) return; // Evitar incrementar el puntaje múltiples veces
+    
         if (this.health > 1) {
-            this.health -= 1; // El jefe pierde vida pero no muere instantáneamente
+            this.health -= 1; // Reducir vida del Boss en cada impacto
             console.log(`Boss health: ${this.health}`);
         } else {
+            this.game.SCORE += 1; // Incrementa el puntaje al derrotar al Boss
+            this.dead = true; // Marcar al Boss como muerto para evitar más colisiones
             super.collide(); // Llamar al método de Character para "matar" al jefe
             console.log("Boss defeated!");
             setTimeout(() => {
