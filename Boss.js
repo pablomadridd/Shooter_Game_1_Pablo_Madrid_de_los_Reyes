@@ -16,19 +16,17 @@ class Boss extends Character {
         this.shoot(); // Iniciar disparos del jefe
     }
 
-shoot() {
-    if (!this.dead && !this.game.ended) {
-        console.log("Boss shooting...");
-        // Crea un disparo con más velocidad y que vaya recto hacia abajo
-        const shot = new Shot(this.game, this); 
-        shot.speed = 30; // Aumenta la velocidad del disparo (ajusta según lo que prefieras)
-        shot.direction = "DOWN"; // Asegura que los disparos vayan recto hacia abajo
-        this.game.opponentShots.push(shot); // Añade el disparo a la lista de disparos del oponente
-
-        // Dispara cada medio segundo para aumentar la frecuencia
-        setTimeout(() => this.shoot(), 500); // Ajusta el tiempo según lo que prefieras
+    shoot() {
+        if (!this.dead && !this.game.ended) {
+            console.log("Boss shooting...");
+            const shot = new Shot(this.game, this);
+            shot.speed = 30; // Aumentar la velocidad del disparo hacia abajo
+            this.game.opponentShots.push(shot); // Añadir el disparo a la lista de disparos del oponente
+    
+            // Disparar cada medio segundo
+            setTimeout(() => this.shoot(), 500); // Ajusta el tiempo según prefieras
+        }
     }
-}
 
 
     /**
@@ -36,24 +34,25 @@ shoot() {
      */
     update() {
         if (!this.dead) {
-            this.y += this.speed; // Movimiento hacia abajo
+            // Movimiento hacia abajo, pero más lento que la velocidad horizontal
+            this.y += this.speed / 3; // Disminuir el descenso vertical
     
-            // Movimiento horizontal con rebote
-            if (this.direction === "R") { // Moviéndose a la derecha
+            // Movimiento horizontal con rebote en los bordes
+            if (this.direction === "R") { // Mover a la derecha
                 this.x += this.speed;
-                if (this.x + this.width >= this.game.width) { // Si llega al borde derecho
-                    this.direction = "L"; // Cambiar dirección a izquierda
+                if (this.x + this.width >= this.game.width) { // Si toca el borde derecho
+                    this.direction = "L"; // Cambiar dirección a la izquierda
                 }
-            } else { // Moviéndose a la izquierda
+            } else { // Mover a la izquierda
                 this.x -= this.speed;
-                if (this.x <= 0) { // Si llega al borde izquierdo
-                    this.direction = "R"; // Cambiar dirección a derecha
+                if (this.x <= 0) { // Si toca el borde izquierdo
+                    this.direction = "R"; // Cambiar dirección a la derecha
                 }
             }
     
-            // Si el jefe se mueve fuera de la pantalla verticalmente, reiniciar su posición
+            // Asegúrate de que siga dentro de la pantalla verticalmente
             if (this.y > this.game.height) {
-                this.y = 0; // Vuelve a la parte superior
+                this.y = 0; // Regresa a la parte superior si baja demasiado
             }
         }
     }

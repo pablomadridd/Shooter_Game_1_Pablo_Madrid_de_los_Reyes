@@ -99,9 +99,9 @@ class Game {
             this.opponent = undefined;
             console.log("Boss defeated! You win!");
             this.endGame(true); // Terminar el juego con victoria
-        } else {
+        } else if (!this.ended) { // Solo crear triángulos normales si el juego no ha terminado
             console.log("Spawning triangle...");
-            this.opponent = new Opponent(this); // Seguir creando triángulos normales si el puntaje es 0
+            this.opponent = new Opponent(this);
         }
     }
 
@@ -275,16 +275,15 @@ class Game {
     /**
      * Update the game elements
      */
-    update () {
+    update() {
         if (this.ended) {
-            // Si el juego ha terminado, no actualizar más elementos ni oponentes
-            return;
+            return; // Detener la actualización si el juego ha terminado
         }
     
-        // Actualización normal del juego si no ha terminado
+        // Continuar con la actualización del juego si no ha terminado
         this.player.update();
         if (this.opponent === undefined) {
-            this.opponent = new Opponent(this); // Crear oponente solo si el juego no ha terminado
+            this.opponent = new Opponent(this); // Solo crear un nuevo oponente si el juego no ha terminado
         }
         this.opponent.update();
         this.playerShots.forEach((shot) => {
