@@ -1,78 +1,69 @@
 class Boss extends Character {
     constructor(game) {
-        // Aumentar el tamaño del jefe
-        const width = 150; // Ancho más grande para el jefe
-        const height = 150; // Altura más grande para el jefe
-        const x = game.width / 2 - width / 2; // Centrar horizontalmente
-        const y = 0; // Aparecer en la parte superior
-        const speed = 10; // Doble de velocidad que los triángulos normales
+        const width = 150; 
+        const height = 150; 
+        const x = game.width / 2 - width / 2; 
+        const y = 0; 
+        const speed = 10; 
         const myImage = 'assets/boss.png';
         const myImageDead = 'assets/boss_dead.png';
 
         super(game, width, height, x, y, speed, myImage, myImageDead);
 
         
-        this.direction = "R"; // Comienza moviéndose hacia la derecha
-        this.shoot(); // Iniciar disparos del jefe
+        this.direction = "R"; 
+        this.shoot(); 
     }
 
     shoot() {
         if (!this.dead && !this.game.ended) {
             console.log("Boss shooting...");
             const shot = new Shot(this.game, this);
-            shot.speed = 30; // Aumentar la velocidad del disparo hacia abajo
-            this.game.opponentShots.push(shot); // Añadir el disparo a la lista de disparos del oponente
+            shot.speed = 30; 
+            this.game.opponentShots.push(shot); 
     
-            // Disparar cada medio segundo
-            setTimeout(() => this.shoot(), 500); // Ajusta el tiempo según prefieras
+           
+            setTimeout(() => this.shoot(), 500); 
         }
     }
 
 
-    /**
-     * Sobrescribir el método `update` para darle movimiento único al jefe
-     */
     update() {
         if (!this.dead) {
-            // Movimiento hacia abajo, pero más lento que la velocidad horizontal
-            this.y += this.speed / 3; // Disminuir el descenso vertical
+            this.y += this.speed / 3; 
     
-            // Movimiento horizontal con rebote en los bordes
-            if (this.direction === "R") { // Mover a la derecha
+            if (this.direction === "R") { 
                 this.x += this.speed;
-                if (this.x + this.width >= this.game.width) { // Si toca el borde derecho
-                    this.direction = "L"; // Cambiar dirección a la izquierda
+                if (this.x + this.width >= this.game.width) { 
+                    this.direction = "L"; 
                 }
-            } else { // Mover a la izquierda
+            } else { 
                 this.x -= this.speed;
-                if (this.x <= 0) { // Si toca el borde izquierdo
-                    this.direction = "R"; // Cambiar dirección a la derecha
+                if (this.x <= 0) { 
+                    this.direction = "R"; 
                 }
             }
     
-            // Asegúrate de que siga dentro de la pantalla verticalmente
             if (this.y > this.game.height) {
-                this.y = 0; // Regresa a la parte superior si baja demasiado
+                this.y = 0; 
             }
         }
     }
 
-    /**
-     * Sobrescribir el método `collide` para manejar las colisiones del jefe
-     */
+
     collide() {
-        if (this.dead) return; // Evitar incrementar el puntaje múltiples veces
+        if (this.dead) return; 
     
         if (this.health > 1) {
-            this.health -= 1; // Reducir vida del Boss en cada impacto
+            this.health -= 1; 
             console.log(`Boss health: ${this.health}`);
         } else {
-            this.game.SCORE += 1; // Incrementa el puntaje al derrotar al Boss
-            this.dead = true; // Marcar al Boss como muerto para evitar más colisiones
-            super.collide(); // Llamar al método de Character para "matar" al jefe
+            this.game.SCORE += 1; 
+            this.dead = true; 
+            super.collide(); 
             console.log("Boss defeated!");
             setTimeout(() => {
-                this.game.removeOpponent(); // Verificar si se termina el juego
+                this.game.removeOpponent(); 
             }, 2000);
         }
     }

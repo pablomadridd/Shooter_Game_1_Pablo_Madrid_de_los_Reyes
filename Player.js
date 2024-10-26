@@ -52,7 +52,7 @@ class Player extends Character {
         if (!this.dead && this.LIVES > 0) {
             this.LIVES -= 1;
             if (this.LIVES > 0) {
-                // Muerte temporal
+                
                 this.dead = true;
                 this.image.src = this.myImageDead;
                 setTimeout(() => {
@@ -60,7 +60,7 @@ class Player extends Character {
                     this.image.src = this.myImage;
                 }, 2000);
             } else {
-                // Muerte permanente
+                
                 super.collide();
                 this.game.endGame();
             }

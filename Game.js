@@ -92,14 +92,14 @@ class Game {
     removeOpponent() {
         if (this.SCORE > 0 && !this.bossSpawned) {
             console.log("Score is greater than 0, spawning boss...");
-            this.opponent = new Boss(this); // Crear al jefe
-            this.bossSpawned = true; // Marcar que el jefe ha sido creado
+            this.opponent = new Boss(this); 
+            this.bossSpawned = true; 
         } else if (this.opponent instanceof Boss) {
             document.body.removeChild(this.opponent.image);
             this.opponent = undefined;
             console.log("Boss defeated! You win!");
-            this.endGame(true); // Terminar el juego con victoria
-        } else if (!this.ended) { // Solo crear triángulos normales si el juego no ha terminado
+            this.endGame(true); 
+        } else if (!this.ended) { 
             console.log("Spawning triangle...");
             this.opponent = new Opponent(this);
         }
@@ -228,36 +228,36 @@ class Game {
     endGame(playerWon = false) {
         this.ended = true;
     
-        // Eliminar todos los oponentes (triángulos o jefe) del DOM
-        const opponents = document.getElementsByClassName("Opponent"); // Obtener todos los elementos con la clase "Opponent"
+        
+        const opponents = document.getElementsByClassName("Opponent"); 
         Array.from(opponents).forEach(opponent => {
-            document.body.removeChild(opponent); // Eliminar cada oponente del DOM
+            document.body.removeChild(opponent);
         });
     
-        // Eliminar el oponente actual si aún existe
+       
         if (this.opponent) {
-            document.body.removeChild(this.opponent.image); // Eliminar el oponente actual del DOM
-            this.opponent = undefined; // Limpiar la referencia del oponente
+            document.body.removeChild(this.opponent.image); 
+            this.opponent = undefined; 
         }
     
-        // Eliminar cualquier disparo del jugador y del oponente
+        
         this.playerShots.forEach((shot) => {
             if (shot.image && shot.image.parentElement) {
-                document.body.removeChild(shot.image); // Eliminar disparos del jugador
+                document.body.removeChild(shot.image); 
             }
         });
         this.opponentShots.forEach((shot) => {
             if (shot.image && shot.image.parentElement) {
-                document.body.removeChild(shot.image); // Eliminar disparos del oponente
+                document.body.removeChild(shot.image); 
             }
         });
     
-        // Limpiar las listas de disparos
+       
         this.playerShots = [];
         this.opponentShots = [];
     
-        // Mostrar la imagen de victoria o derrota
-        let image = playerWon ? 'assets/you_win.png' : GAME_OVER_PICTURE; // Imagen de victoria o derrota
+       
+        let image = playerWon ? 'assets/you_win.png' : GAME_OVER_PICTURE; 
         let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, image);
         gameOver.render();
     
@@ -277,13 +277,13 @@ class Game {
      */
     update() {
         if (this.ended) {
-            return; // Detener la actualización si el juego ha terminado
+            return; 
         }
     
-        // Continuar con la actualización del juego si no ha terminado
+     
         this.player.update();
         if (this.opponent === undefined) {
-            this.opponent = new Opponent(this); // Solo crear un nuevo oponente si el juego no ha terminado
+            this.opponent = new Opponent(this); 
         }
         this.opponent.update();
         this.playerShots.forEach((shot) => {
